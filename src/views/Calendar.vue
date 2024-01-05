@@ -60,16 +60,7 @@ export default {
     function getListData(value) {
       const day = dayjs(value);
       let listData;
-      switch (day.date()) {
-        case 8:
-          listData = [
-            { type: 'warning', content: 'Ali Kefali FIFAda ilk siktiğim tarih.' },
-            { type: 'success', content: 'Ali Kefalin mağlubiyet rekoru kırdığı tarih.' },
-          ];
-          break;
 
-        default:
-      }
       return listData || [];
     }
 
