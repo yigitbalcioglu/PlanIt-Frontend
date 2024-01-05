@@ -16,9 +16,8 @@ export default defineConfig({
         target: 'http://localhost:5000',
       },
       "/login":{
-        target:"http://localhost:5000"
+        target:"http://localhost:5000",
       }
-
     },
   },
   resolve: {

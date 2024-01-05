@@ -7,6 +7,8 @@ import Calendar from "../views/Calendar.vue";
 import Deneme from "../views/Deneme.vue"
 
 
+
+
 const routes = [
     {
         path: '/',
@@ -53,6 +55,7 @@ router.beforeEach((to, from, next) => {
     //backendden session bilgisi almamız lazım
     const publicPages = ["/","/home",'/login', '/register'];
     const loggedIn = true;
+
 
 
     if (publicPages.includes(to.path) || loggedIn) {

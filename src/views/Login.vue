@@ -59,6 +59,7 @@ export default{
           }
         });
         console.log('Success:', response.data);
+        document.cookie=`session_id=${response.data.session_id}`;
         await router.push("/")
       } catch (error) {
         if (error.response.status === 409) { // Çakışma durumu

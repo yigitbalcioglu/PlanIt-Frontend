@@ -4,7 +4,8 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+import {createEventId } from './event-utils'
+import axios from "axios";
 
 export default defineComponent({
   components: {
@@ -24,7 +25,7 @@ export default defineComponent({
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         initialView: 'dayGridMonth',
-        initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+        events:[], // alternatively, use the `events` setting to fetch from a feed
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -33,18 +34,38 @@ export default defineComponent({
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
         eventsSet: this.handleEvents
-        /* you can update a remote database when these fire:
-        eventAdd:
-        eventChange:
-        eventRemove:
-        */
       },
       currentEvents: [],
     }
   },
+
+  mounted() {
+    this.fetchEvents();
+  },
+
   methods: {
+    fetchEvents(){
+      axios.get('http://127.0.0.1:5000/api/get_day_events')
+          .then(response => {
+            // API'dan alınan verileri doğru formata dönüştürün
+            const formattedEvents = response.data.map(event => ({
+              id: event.id, // veya createEventId() kullanabilirsiniz
+              title: event.title,
+              start: event.date + ' ' + event.start_time,
+              end: event.date + ' ' + event.end_time
+            }));
+            // calendarOptions içindeki events'i güncelleyin
+            this.calendarOptions.events.push(...formattedEvents);
+          })
+          .catch(error => {
+            console.error('There was an error!', error);
+          });
+    },
+
     handleDateSelect(selectInfo) {
-      let title = prompt('Please enter a new title for your event')
+      let title = prompt('Please enter a new Title for your event')
+      let date = prompt('Please enter a new Start Date for your event')
+      let end = prompt('Please enter a new End Date for your event')
       let calendarApi = selectInfo.view.calendar
 
       calendarApi.unselect() // clear date selection
@@ -87,6 +108,7 @@ export default defineComponent({
         <ul>
           <li v-for='event in currentEvents' :key='event.id'>
             <b>{{ event.startStr }}</b>
+            <b>{{ event.endStr }}</b>
             <i>{{ event.title }}</i>
           </li>
         </ul>
@@ -108,7 +130,7 @@ export default defineComponent({
 
 <style lang='css'>
 .demo-app{
-  background-color: #f09819;
+  background-color: #42b983;
 }
 h2 {
   margin: 0;
