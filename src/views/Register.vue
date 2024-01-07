@@ -64,7 +64,7 @@ export default {
       //iki şifre uyuşuyor
       else {
           try {
-            const response = await axios.post('http://127.0.0.1:5173/register',{
+            const response = await axios.post('http://127.0.0.1:5000/register',{
               username: formState.username,
               email: formState.email,
               password: formState.password,

@@ -45,7 +45,9 @@ export default defineComponent({
 
   methods: {
     fetchEvents(){
-      axios.get('http://127.0.0.1:5000/api/get_day_events')
+      console.log(document.cookie)
+      axios.get('http://127.0.0.1:5000/api/get_day_events'
+      , {withCredentials:true})
           .then(response => {
             // API'dan alınan verileri doğru formata dönüştürün
             const formattedEvents = response.data.map(event => ({
